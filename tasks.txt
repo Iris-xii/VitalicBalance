@@ -1,0 +1,27 @@
+Tasks:
+* strings --onlyOnChange
+* intermediary --onlyOnChange
+* newMod -name "VitalicBalance"
+* copy -toMod "VitalicBalance" -from "C:\d\Dl\Opus Magnum\VitalicBalance\modMeta.jsonc"
+* copy -toMod "VitalicBalance" -from "C:\d\Dl\Opus Magnum\VitalicBalance\bin\Debug\net10.0\VitalicBalance.dll"
+* copy -toMod "VitalicBalance" -from "C:\d\Dl\Opus Magnum\VitalicBalance\bin\Debug\net10.0\VitalicBalance.pdb"
+* copy -toMod "VitalicBalance" -from "C:\d\Dl\Opus Magnum\VitalicBalance\bin\Debug\net10.0\VitalicBalance.xml"
+* copy -toMod "VitalicBalance" -from "C:\d\Dl\Opus Magnum\VitalicBalance\Content"
+* devMerge --onlyOnChange --mergeXML -id "vitalic_balance"
+* merge --onlyOnChange --asNamed
+* export -name "VitalicBalance" -outputPath "C:\d\Dl\Opus Magnum\VitalicBalance_builds"
+* run --readLogs -args "-devEnv -pseudoLang"
+
+AutoExit:
+  false
+
+# Included just to copy the tasks.txt into a versionned folder.
+# Comment out if you don't want to keep a spare copy of this in your repository.
+# CopyTasksPath:
+# D:\C#_projects\TemplateMod
+
+# Mods to also include in the devMerge task other than your direct dependencies. ( Replace # with * for list. )
+# Shoul be used with care, allways test without these optional dependencies enabled!
+# DevMods:
+# optional_dep_1
+# optional_dep_2

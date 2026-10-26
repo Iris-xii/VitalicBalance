@@ -1,0 +1,33 @@
+{
+  "vitalic_balance": {
+    "": "Vitalic Balance",
+    "description": "*Description coming soon?*",
+    "atoms": {
+      "test_atom": {
+        "": "Test Atom",
+        "elemental": "Elemental Test Atom"
+      }
+    },
+    "permission_sections": {
+      "vitalic_balance":"Vitalic Balance"
+    },
+    "permissions": {
+      "animismus_infuser":"Animismus Infuser",
+      "ambient_retrieval":"Glyph of Ambient Retrieval"
+    },
+    "parts" : {
+      "animismus_gauge": {
+        "":"Animismus Gauge",
+        "description":"The Animismus Gauge displays the Animismus charge present in this transmutation chamber."
+      },
+      "animismus_infuser": {
+        "":"Animismus Infuser",
+        "description":"The Animismus Infuser consumes an atom of Vitae or Mors to infuse the transmutation chamber with its charge."
+      },
+      "ambient_retrieval": {
+        "":"Glyph of Ambient Retrieval",
+        "description":"The Glyph of Ambient Retrieval transmutes an atom of salt into Vitae or Mors according to the ambient charge, pushing the ambient charge back towards neutral in the process."
+      }
+    }
+  }
+}
