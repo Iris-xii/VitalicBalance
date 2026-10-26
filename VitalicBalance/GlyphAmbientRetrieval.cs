@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
-using System.Security.Cryptography;
 using Quintessential;
 
 namespace VitalicBalance;
@@ -53,6 +48,11 @@ internal static class GlyphAmbientRetrieval {
       renderer.RenderUpright(Resources.saltGlyph, SALT_BOWL, Vector2.Zero);
       renderer.RenderTrackLights(Resources.chargeDisplayTextures,
         CHARGE_DISPLAY, Vector2.Zero, Resources.chargeDisplayTextures.topLight.GetHalfSize(), 0f);
+      if(editor.GetSimulation() is Sim sim) {
+        var vc = sim.VitalicCharge;
+        if(vc.current.IsChargeVitae()) {renderer.RenderUpright(Resources.displayVitae,CHARGE_DISPLAY,Vector2.Zero);}
+        if(vc.current.IsChargeMors()) {renderer.RenderUpright(Resources.displayMors,CHARGE_DISPLAY,Vector2.Zero);}
+      }
     });
     QApi.AddPartTypeToPanel(TYPE, false);
     QApi.BindGlyphCycle(TYPE, new(PartCycleDelegate.PartCycleExecutionType.Normal,

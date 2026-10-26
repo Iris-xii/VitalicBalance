@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
-using System.Security.Cryptography;
 using Quintessential;
 
 namespace VitalicBalance;
@@ -54,7 +49,6 @@ internal static class GlyphAnimismusInfuser {
       if (isCycleStart && recipe.Predicate.InvokeAndClear(sim, part)) {
         TryTransmute(sim, part, IN_HOLE, delAnim: DelAnim.CONSUME);
         Texture[] gridKind = Resources.gridVitae;
-
         if (CHARGE_TYPE_LAST == ChargeType.Vitae) {
           gridKind = Resources.gridVitae;
           sim.VitalicCharge.next += VitalicCharge.VitaeAtom(1);

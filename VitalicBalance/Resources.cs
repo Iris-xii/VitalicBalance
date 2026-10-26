@@ -71,4 +71,6 @@ internal static class Resources {
   public static Texture saltGlyph = Tex("salt_glyph_engraved");
   public static Texture[] saltGlyphGlow = Anim("salt_glyph.array",9);
   public static Texture[] bowlGlow = Anim("bowl_glow.array",9);
+  public static Texture displayVitae = Tex("display_vitae");
+  public static Texture displayMors = Tex("display_mors");
 }
