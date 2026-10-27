@@ -2,8 +2,8 @@ using Quintessential;
 
 namespace VitalicBalance;
 
-using static VitalicBalance;
 using static IrisUtils;
+using static VitalicBalance;
 
 internal static class GlyphAnimismusInfuser {
   internal static Identifier ID = IdObj("animismus_infuser");
@@ -16,15 +16,14 @@ internal static class GlyphAnimismusInfuser {
     glyphHexes = [IN_HOLE, GRIDFUSER],
     CustomPermissionCheck = (p) => p.Contains(ID),
   }.WithTex(Resources.glyphInfuser);
-  internal enum ChargeType { Vitae, Mors }
-  internal static ChargeType CHARGE_TYPE_LAST = ChargeType.Vitae;
-  internal static GlyphRecipe Recipe(AtomType sinkTarget, ChargeType charge) => new((sim, part) => {
+
+  internal static GlyphRecipe Recipe(AtomType sinkTarget, VitalicCharge chargeChange) => new((sim, part) => {
     if (sim.GetAtomReference(part, IN_HOLE, false, out var sinkAtom)
     && sinkAtom.atomType == sinkTarget
     && !sinkAtom.isHeldByArm
     && !sinkAtom.inMultiAtomMolecule) {
       sim.RecipeInputs[IN_HOLE] = sinkAtom;
-      CHARGE_TYPE_LAST = charge;
+      sim.RecipeAlterCharge = chargeChange;
       return true;
     }
     return false;
@@ -46,30 +45,17 @@ internal static class GlyphAnimismusInfuser {
     QApi.AddPartTypeToPanel(TYPE, false);
     QApi.BindGlyphCycle(TYPE, new(PartCycleDelegate.PartCycleExecutionType.Normal,
     (sim, part, pss, recipe, isCycleStart) => {
-      if (isCycleStart && recipe.Predicate.InvokeAndClear(sim, part)) {
+      if (isCycleStart && recipe.InvokeAndClear(sim, part)) {
         TryTransmute(sim, part, IN_HOLE, delAnim: DelAnim.CONSUME);
-        Texture[] gridKind = Resources.gridVitae;
-        if (CHARGE_TYPE_LAST == ChargeType.Vitae) {
-          gridKind = Resources.gridVitae;
-          sim.VitalicCharge.next += VitalicCharge.VitaeAtom(1);
-        }
-        else if (CHARGE_TYPE_LAST == ChargeType.Mors) {
-          gridKind = Resources.gridMors;
-          sim.VitalicCharge.next += VitalicCharge.MorsAtom(1);
-        }
-        sim.solutionEditor.consumptionEffects.Add(
-          new GlyphEffect(sim.solutionEditor, EffectTimescaleType.RealTime,
-          HexGrid.standardGrid.ToPixelCoords(part.InFrontBy(GRIDFUSER))
-          - (Resources.glyphInfuser.@base.GetHalfSize() * new Vector2(0, -1)),
-          gridKind, 30f, Vector2.Zero, 0f)
-        );
+        sim.GetVitalicCharge(part).next += sim.RecipeAlterCharge;
+        SpawnGridAnimation(sim,part,GRIDFUSER);
         return true;
       }
       return false;
     }));
     AddAllRecipes<(string, GlyphRecipe)[]>(ID, [
-      ("infuse-vitae",Recipe(AtomTypes.vitae,ChargeType.Vitae)),
-      ("infuse-mors",Recipe(AtomTypes.mors,ChargeType.Mors))
+      ("infuse-vitae",Recipe(AtomTypes.vitae,VitalicCharge.VitaeAtom(1))),
+      ("infuse-mors",Recipe(AtomTypes.mors,VitalicCharge.MorsAtom(1)))
     ]);
   }
 }

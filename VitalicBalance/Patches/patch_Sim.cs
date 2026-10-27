@@ -15,4 +15,5 @@ using VitalicBalance;
 
 public class patch_Sim {
   internal SimVitalicCharge? vitalicBalanceSimVitalicCharge = new();
+  internal VitalicCharge vitalicBalanceRecipeAlterChargeBy = VitalicCharge.Zero;
 }

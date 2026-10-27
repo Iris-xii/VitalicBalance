@@ -17,22 +17,17 @@ internal static class GlyphAmbientRetrieval {
     CustomPermissionCheck = (p) => p.Contains(ID),
   }.WithTex(Resources.glyphAmbientRetrieval);
 
-  internal enum RequireChargeType { None, Vitae, Mors }
   internal static GlyphRecipe Recipe(AtomType salt, AtomType output,RequireChargeType reqCharge) => new((sim, part) => {
     if (sim.GetAtomReference(part, SALT_BOWL, false, out var saltRef)
       && saltRef.atomType == salt
-      && (
-        (reqCharge == RequireChargeType.Vitae && sim.VitalicCharge.current.IsChargeVitae())
-        || (reqCharge == RequireChargeType.Mors && sim.VitalicCharge.current.IsChargeMors())
-        || (reqCharge == RequireChargeType.None)
-      )
+      && reqCharge.Fulfilled(sim,part)
     ) {
       sim.RecipeInputs[SALT_BOWL] = saltRef;
       sim.RecipeOutputs[SALT_BOWL] = output;
       var changeChargeBy = VitalicCharge.Zero;
       if(reqCharge == RequireChargeType.Vitae) {changeChargeBy = VitalicCharge.MorsAtom(1);}
       else if(reqCharge == RequireChargeType.Mors) {changeChargeBy = VitalicCharge.VitaeAtom(1);}
-      sim.VitalicCharge.next += changeChargeBy;
+      sim.RecipeAlterCharge = changeChargeBy;
       return true;
     }
     return false;
@@ -49,16 +44,17 @@ internal static class GlyphAmbientRetrieval {
       renderer.RenderTrackLights(Resources.chargeDisplayTextures,
         CHARGE_DISPLAY, Vector2.Zero, Resources.chargeDisplayTextures.topLight.GetHalfSize(), 0f);
       if(editor.GetSimulation() is Sim sim) {
-        var vc = sim.VitalicCharge;
-        if(vc.current.IsChargeVitae()) {renderer.RenderUpright(Resources.displayVitae,CHARGE_DISPLAY,Vector2.Zero);}
-        if(vc.current.IsChargeMors()) {renderer.RenderUpright(Resources.displayMors,CHARGE_DISPLAY,Vector2.Zero);}
+        var vc = sim.GetVitalicCharge(part);
+        if(vc.Current.IsChargeVitae()) {renderer.RenderUpright(Resources.displayVitae,CHARGE_DISPLAY,Vector2.Zero);}
+        if(vc.Current.IsChargeMors()) {renderer.RenderUpright(Resources.displayMors,CHARGE_DISPLAY,Vector2.Zero);}
       }
     });
     QApi.AddPartTypeToPanel(TYPE, false);
     QApi.BindGlyphCycle(TYPE, new(PartCycleDelegate.PartCycleExecutionType.Normal,
     (sim, part, pss, recipe, isCycleStart) => {
-      if (recipe.Predicate.InvokeAndClear(sim, part)) {
+      if (recipe.InvokeAndClear(sim, part)) {
         TryTransmute(sim, part, SALT_BOWL);
+        sim.GetVitalicCharge(part).next += sim.RecipeAlterCharge;
 
         sim.solutionEditor.consumptionEffects.Add(
           new GlyphEffect(sim.solutionEditor, EffectTimescaleType.RealTime,

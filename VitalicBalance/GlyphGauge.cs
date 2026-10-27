@@ -26,9 +26,9 @@ internal static class GlyphGauge {
 
       int gaugeIdx = 20;
       if(editor.GetSimulation() is Sim sim) {
-        var vc = sim.VitalicCharge;
-        int framePrevious = vc.previous.AnimationFrame();
-        int frameCurrent = vc.current.AnimationFrame();
+        var vc = sim.GetVitalicCharge(part);
+        int framePrevious = vc.Previous.AnimationFrame();
+        int frameCurrent = vc.Current.AnimationFrame();
         if(framePrevious == frameCurrent || editor.GetSimPlayState() == SimPlayState.Stepping) 
           {gaugeIdx = frameCurrent;}
         else {
