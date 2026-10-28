@@ -42,14 +42,8 @@ internal static class GlyphAmbientRetrieval {
       renderer.RenderBase(Resources.glyphAmbientRetrieval.@base, center);
       renderer.RenderRotating(Assets.textures.parts.calcinator_bowl, SALT_BOWL, Vector2.Zero);
       renderer.RenderUpright(Resources.saltGlyph, SALT_BOWL, Vector2.Zero);
-      renderer.RenderTrackLights(Resources.cdEither,
-        CHARGE_DISPLAY, Vector2.Zero, Resources.cdEither.topLight.GetHalfSize(), 0f);
+      RequireChargeType.Either.RenderChargeDisplay(renderer,editor,part,CHARGE_DISPLAY);
       RenderVent(renderer,VENT);
-      if (editor.GetSimulation() is Sim sim) {
-        var vc = sim.GetVitalicCharge(part);
-        if (vc.Current.IsChargeVitae()) { renderer.RenderUpright(Resources.displayVitae, CHARGE_DISPLAY, Vector2.Zero); }
-        if (vc.Current.IsChargeMors()) { renderer.RenderUpright(Resources.displayMors, CHARGE_DISPLAY, Vector2.Zero); }
-      }
     });
     QApi.AddPartTypeToPanel(TYPE, false);
     QApi.BindGlyphCycle(TYPE, new(PartCycleDelegate.PartCycleExecutionType.Normal,

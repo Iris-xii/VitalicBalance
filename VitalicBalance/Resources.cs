@@ -45,16 +45,6 @@ internal static class Resources {
     }
     return anim;
   }
-  internal static LightDirTextures ChargeDisplay(string variant) {
-    _ = variant;
-    return chargeDisplayTextures;
-    //_ = new LightDirTextures(
-    //  left: Tex(Path.Combine(["charge_display", variant, "left"])),
-    //  right: Tex(Path.Combine(["charge_display", variant, "right"])),
-    //  top: Tex(Path.Combine(["charge_display", variant, "top"])),
-    //  bottom: Tex(Path.Combine(["charge_display", variant, "bottom"])));
-  }
-
   extension(PartType pt) {
     internal PartType WithTex(GlyphTex value) {
       pt.glowTexture = value.glow;
@@ -81,17 +71,17 @@ internal static class Resources {
   public static Texture qsGlyph = Tex("quicksilver_engraved");
   public static Texture[] qsGlyphGlow = Anim("quicksilver_glyph.array", 9);
 
-  public static LightDirTextures cdVitae = ChargeDisplay("vitae");
-  public static LightDirTextures cdMors = ChargeDisplay("mors");
-  public static LightDirTextures cdNeutral = ChargeDisplay("neutral");
-  public static LightDirTextures cdNeutralMors = ChargeDisplay("neutral_mors");
-  public static LightDirTextures cdNeutralVitae = ChargeDisplay("neutral_vitae");
-  public static LightDirTextures cdEither = ChargeDisplay("either");
-  private static LightDirTextures chargeDisplayTextures = new(
+  public static LightDirTextures chargeDisplayTextures = new(
     left: Tex("charge_display_left"),
     right: Tex("charge_display_right"),
     bottom: Tex("charge_display_bottom"),
     top: Tex("charge_display_top")
   );
+  public static Texture cdMors = Tex("charge_display/mors");
+  public static Texture cdMorsHollow = Tex("charge_display/mors_hollow");
+  public static Texture cdNeutral = Tex("charge_display/neutral");
+  public static Texture cdNeutralHollow = Tex("charge_display/neutral_hollow");
+  public static Texture cdVitae = Tex("charge_display/vitae");
+  public static Texture cdVitaeHollow = Tex("charge_display/vitae_hollow");
 
 }

@@ -40,15 +40,8 @@ internal static class GlyphQuicksilverReduction {
       renderer.RenderBase(Resources.glyphQuicksilverReduction.@base, center);
       renderer.RenderRotating(Assets.textures.parts.calcinator_bowl, BOWL, Vector2.Zero);
       renderer.RenderUpright(Resources.qsGlyph, BOWL, Vector2.Zero);
-      renderer.RenderTrackLights(Resources.cdNeutralVitae,
-        INDICATOR, Vector2.Zero, Resources.cdNeutralVitae.topLight.GetHalfSize(), 0f);
+      RequireChargeType.NeutralOrVitae.RenderChargeDisplay(renderer,editor,part,INDICATOR);
       RenderVent(renderer, VENT);
-      if (editor.GetSimulation() is Sim sim) {
-        var vc = sim.GetVitalicCharge(part);
-        if (vc.Current.IsChargeVitae() || vc.Current.IsChargeNeutral()) {
-          renderer.RenderUpright(Resources.displayVitae, INDICATOR, Vector2.Zero);
-        }
-      }
     });
     QApi.AddPartTypeToPanel(TYPE, false);
     QApi.BindGlyphCycle(TYPE, new(PartCycleDelegate.PartCycleExecutionType.Normal,

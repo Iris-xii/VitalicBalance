@@ -47,9 +47,21 @@ internal record class SimVitalicCharge {
   }
 }
 
-internal enum RequireChargeType { None, Vitae, Mors, Neutral,NeutralOrVitae,NeutralOrMors }
+internal enum RequireChargeType { None, Vitae, Mors, Neutral, NeutralOrVitae, NeutralOrMors, Either }
 internal static class VitalicChargeExt {
   extension(RequireChargeType req) {
+    private bool NeedsVitae() =>
+      req == RequireChargeType.Vitae
+      || req == RequireChargeType.NeutralOrVitae
+      || req == RequireChargeType.Either;
+    private bool NeedsMors() =>
+      req == RequireChargeType.Mors
+      || req == RequireChargeType.NeutralOrMors
+      || req == RequireChargeType.Either;
+    private bool NeedsNeutral() =>
+      req == RequireChargeType.Neutral
+      || req == RequireChargeType.NeutralOrVitae
+      || req == RequireChargeType.NeutralOrMors;
     internal bool Fulfilled(Sim sim, Part part) => req.Fulfilled(sim, part.GetHexPos());
     internal bool Fulfilled(Sim sim, HexIndex pos) {
       var charge = sim.GetVitalicCharge(pos).Current;
@@ -60,8 +72,32 @@ internal static class VitalicChargeExt {
         RequireChargeType.Neutral => charge.IsChargeNeutral(),
         RequireChargeType.NeutralOrVitae => charge.IsChargeNeutral() || charge.IsChargeVitae(),
         RequireChargeType.NeutralOrMors => charge.IsChargeNeutral() || charge.IsChargeMors(),
+        RequireChargeType.Either => charge.IsChargeVitae() || charge.IsChargeMors(),
         _ => throw new System.NotImplementedException(),
       };
+    }
+    internal void RenderChargeDisplay(PartRenderer renderer, SolutionEditorBase editor, Part part, HexIndex relPos) {
+      VitalicCharge? charge = null;
+      if (editor.GetSimulation() is Sim sim) {
+        charge = sim.GetVitalicCharge(part).Current;
+      }
+      renderer.RenderTrackLights(Resources.chargeDisplayTextures,
+        relPos, Vector2.Zero, Resources.chargeDisplayTextures.topLight.GetHalfSize(), 0f);
+      if (req.NeedsVitae()) {
+        Texture t = (charge is VitalicCharge v && v.IsChargeVitae()) ?
+          Resources.cdVitae : Resources.cdVitaeHollow;
+        renderer.RenderUpright(t, relPos, Vector2.Zero);
+      }
+      if (req.NeedsMors()) {
+        Texture t = (charge is VitalicCharge v && v.IsChargeMors()) ?
+          Resources.cdMors : Resources.cdMorsHollow;
+        renderer.RenderUpright(t, relPos, Vector2.Zero);
+      }
+      if (req.NeedsNeutral()) {
+        Texture t = (charge is VitalicCharge v && v.IsChargeNeutral()) ?
+          Resources.cdNeutral : Resources.cdNeutralHollow;
+        renderer.RenderUpright(t, relPos, Vector2.Zero);
+      }
     }
   }
   extension(Quintessential.RecipePredicate pred) {
