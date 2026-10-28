@@ -9,24 +9,25 @@ internal static class GlyphAmbientRetrieval {
   internal static Identifier ID = IdObj("ambient_retrieval");
   internal static HexIndex SALT_BOWL = new(0, 0);
   internal static HexIndex CHARGE_DISPLAY = new(1, 0);
+  internal static HexIndex VENT = new(0, 1);
   internal static PartType TYPE = new PartType() {
     Id = ID,
     cost = 40,
     isFullHexCover = true,
-    glyphHexes = [SALT_BOWL, CHARGE_DISPLAY],
+    glyphHexes = [SALT_BOWL, CHARGE_DISPLAY, VENT],
     CustomPermissionCheck = (p) => p.Contains(ID),
   }.WithTex(Resources.glyphAmbientRetrieval);
 
-  internal static GlyphRecipe Recipe(AtomType salt, AtomType output,RequireChargeType reqCharge) => new((sim, part) => {
+  internal static GlyphRecipe Recipe(AtomType salt, AtomType output, RequireChargeType reqCharge) => new((sim, part) => {
     if (sim.GetAtomReference(part, SALT_BOWL, false, out var saltRef)
       && saltRef.atomType == salt
-      && reqCharge.Fulfilled(sim,part)
+      && reqCharge.Fulfilled(sim, part)
     ) {
       sim.RecipeInputs[SALT_BOWL] = saltRef;
       sim.RecipeOutputs[SALT_BOWL] = output;
       var changeChargeBy = VitalicCharge.Zero;
-      if(reqCharge == RequireChargeType.Vitae) {changeChargeBy = VitalicCharge.MorsAtom(1);}
-      else if(reqCharge == RequireChargeType.Mors) {changeChargeBy = VitalicCharge.VitaeAtom(1);}
+      if (reqCharge == RequireChargeType.Vitae) { changeChargeBy = VitalicCharge.MorsAtom(1); }
+      else if (reqCharge == RequireChargeType.Mors) { changeChargeBy = VitalicCharge.VitaeAtom(1); }
       sim.RecipeAlterCharge = changeChargeBy;
       return true;
     }
@@ -43,10 +44,11 @@ internal static class GlyphAmbientRetrieval {
       renderer.RenderUpright(Resources.saltGlyph, SALT_BOWL, Vector2.Zero);
       renderer.RenderTrackLights(Resources.chargeDisplayTextures,
         CHARGE_DISPLAY, Vector2.Zero, Resources.chargeDisplayTextures.topLight.GetHalfSize(), 0f);
-      if(editor.GetSimulation() is Sim sim) {
+      RenderVent(renderer,VENT);
+      if (editor.GetSimulation() is Sim sim) {
         var vc = sim.GetVitalicCharge(part);
-        if(vc.Current.IsChargeVitae()) {renderer.RenderUpright(Resources.displayVitae,CHARGE_DISPLAY,Vector2.Zero);}
-        if(vc.Current.IsChargeMors()) {renderer.RenderUpright(Resources.displayMors,CHARGE_DISPLAY,Vector2.Zero);}
+        if (vc.Current.IsChargeVitae()) { renderer.RenderUpright(Resources.displayVitae, CHARGE_DISPLAY, Vector2.Zero); }
+        if (vc.Current.IsChargeMors()) { renderer.RenderUpright(Resources.displayMors, CHARGE_DISPLAY, Vector2.Zero); }
       }
     });
     QApi.AddPartTypeToPanel(TYPE, false);
@@ -55,6 +57,7 @@ internal static class GlyphAmbientRetrieval {
       if (recipe.InvokeAndClear(sim, part)) {
         TryTransmute(sim, part, SALT_BOWL);
         sim.GetVitalicCharge(part).next += sim.RecipeAlterCharge;
+        SpawnVentAnimation(sim, part, VENT);
 
         sim.solutionEditor.consumptionEffects.Add(
           new GlyphEffect(sim.solutionEditor, EffectTimescaleType.RealTime,

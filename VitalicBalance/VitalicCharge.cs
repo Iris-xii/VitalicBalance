@@ -62,12 +62,14 @@ internal static class VitalicChargeExt {
   }
   extension(Quintessential.RecipePredicate pred) {
     [System.Obsolete("Does not clear our custom stuff, don't use.")]
-    internal bool InvokeAndClear(Sim sim, Part part) => QApi.InvokeAndClear(pred,sim,part);
+    internal bool InvokeAndClear(Sim sim, Part part) => QApi.InvokeAndClear(pred, sim, part);
   }
   extension(Quintessential.GlyphRecipe recipe) {
     internal bool InvokeAndClear(Sim sim, Part part) {
-      sim.RecipeAlterCharge = VitalicCharge.Zero; 
-      return QApi.InvokeAndClear(recipe.Predicate,sim, part); 
+      sim.RecipeAlterCharge = VitalicCharge.Zero;
+      sim.RecipeInputs.Clear();
+      sim.RecipeOutputs.Clear();
+      return recipe.Predicate(sim, part);
     }
   }
   extension(Sim sim) {

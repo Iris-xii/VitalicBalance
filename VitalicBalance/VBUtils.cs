@@ -8,16 +8,22 @@ using static VitalicBalance.VitalicBalance;
 namespace VitalicBalance;
 
 internal static partial class IrisUtils {
-  internal static void SpawnGridAnimation(Sim sim,Part part,HexIndex relativePos) {
+  internal static void SpawnVentAnimation(Sim sim, Part part, HexIndex relativePos) {
     Texture[] gridKind = Resources.gridVitae;
-    if (sim.RecipeAlterCharge.IsChargeVitae()) {gridKind = Resources.gridVitae;}
-    else if (sim.RecipeAlterCharge.IsChargeMors()) {gridKind = Resources.gridMors;}
-    
+    if (sim.RecipeAlterCharge.IsChargeVitae()) { gridKind = Resources.gridVitae; }
+    else if (sim.RecipeAlterCharge.IsChargeMors()) { gridKind = Resources.gridMors; }
+
     sim.solutionEditor.consumptionEffects.Add(
       new GlyphEffect(sim.solutionEditor, EffectTimescaleType.RealTime,
       HexGrid.standardGrid.ToPixelCoords(part.InFrontBy(relativePos))
       - (Resources.glyphInfuser.@base.GetHalfSize() * new Vector2(0, -1)),
       gridKind, 30f, Vector2.Zero, 0f)
+    );
+  }
+  internal static void RenderVent(PartRenderer renderer,HexIndex partPos) {
+    renderer.RenderRotating(Assets.textures.parts.pipe_ring, partPos, Vector2.Zero);
+    renderer.RenderUpright(Resources.gridVitae[0], partPos,
+      Resources.glyphInfuser.@base.GetHalfSize() * new Vector2(0, -1)
     );
   }
 }
