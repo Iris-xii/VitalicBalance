@@ -45,12 +45,16 @@ internal static class Resources {
     }
     return anim;
   }
-  internal static LightDirTextures ChargeDisplay(string variant) => new(
-    left: Tex(Path.Combine(["charge_display", variant, "left"])),
-    right: Tex(Path.Combine(["charge_display", variant, "right"])),
-    top: Tex(Path.Combine(["charge_display", variant, "top"])),
-    bottom: Tex(Path.Combine(["charge_display", variant, "bottom"]))
-  );
+  internal static LightDirTextures ChargeDisplay(string variant) {
+    _ = variant;
+    return chargeDisplayTextures;
+    //_ = new LightDirTextures(
+    //  left: Tex(Path.Combine(["charge_display", variant, "left"])),
+    //  right: Tex(Path.Combine(["charge_display", variant, "right"])),
+    //  top: Tex(Path.Combine(["charge_display", variant, "top"])),
+    //  bottom: Tex(Path.Combine(["charge_display", variant, "bottom"])));
+  }
+
   extension(PartType pt) {
     internal PartType WithTex(GlyphTex value) {
       pt.glowTexture = value.glow;
@@ -83,4 +87,11 @@ internal static class Resources {
   public static LightDirTextures cdNeutralMors = ChargeDisplay("neutral_mors");
   public static LightDirTextures cdNeutralVitae = ChargeDisplay("neutral_vitae");
   public static LightDirTextures cdEither = ChargeDisplay("either");
+  private static LightDirTextures chargeDisplayTextures = new(
+    left: Tex("charge_display_left"),
+    right: Tex("charge_display_right"),
+    bottom: Tex("charge_display_bottom"),
+    top: Tex("charge_display_top")
+  );
+
 }
