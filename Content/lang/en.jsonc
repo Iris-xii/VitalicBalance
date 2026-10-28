@@ -13,7 +13,8 @@
     },
     "permissions": {
       "animismus_infuser":"Animismus Infuser",
-      "ambient_retrieval":"Glyph of Ambient Retrieval"
+      "ambient_retrieval":"Glyph of Ambient Retrieval",
+      "quicksilver_reduction":"Glyph of Quicksilver Reduction"
     },
     "parts" : {
       "animismus_gauge": {
@@ -27,6 +28,10 @@
       "ambient_retrieval": {
         "":"Glyph of Ambient Retrieval",
         "description":"The Glyph of Ambient Retrieval transmutes an atom of salt into Vitae or Mors according to the ambient charge, pushing the ambient charge back towards neutral in the process."
+      },
+      "quicksilver_reduction": {
+        "":"Glyph of Quicksilver Reduction",
+        "description":"The Glyph of Quicksilver Reduction transmutes an atom of quicksilver into an atom of Vitae, and pushes the ambient charge towards Vitae in the process."
       }
     }
   }

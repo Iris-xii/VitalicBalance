@@ -35,7 +35,7 @@ internal static class GlyphAmbientRetrieval {
   });
 
   internal static void LoadContent() {
-    QApi.AddPuzzlePermission(Instance, ID.name, ID.name, Section, length: 4);
+    QApi.AddPuzzlePermission(Instance, ID.name, ID.name, Section, length: 2);
     QApi.AddPartType(Instance, TYPE, ID.name,
     (part, pos, editor, renderer) => {
       Vector2 center = Resources.glyphAmbientRetrieval.@base.GetHalfSize();

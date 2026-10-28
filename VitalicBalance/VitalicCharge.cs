@@ -47,18 +47,22 @@ internal record class SimVitalicCharge {
   }
 }
 
-
-internal enum RequireChargeType { None, Vitae, Mors, Neutral }
+internal enum RequireChargeType { None, Vitae, Mors, Neutral,NeutralOrVitae,NeutralOrMors }
 internal static class VitalicChargeExt {
   extension(RequireChargeType req) {
     internal bool Fulfilled(Sim sim, Part part) => req.Fulfilled(sim, part.GetHexPos());
-    internal bool Fulfilled(Sim sim, HexIndex pos) => req switch {
-      RequireChargeType.None => true,
-      RequireChargeType.Vitae => sim.GetVitalicCharge(pos).Current.IsChargeVitae(),
-      RequireChargeType.Mors => sim.GetVitalicCharge(pos).Current.IsChargeMors(),
-      RequireChargeType.Neutral => sim.GetVitalicCharge(pos).Current.IsChargeNeutral(),
-      _ => throw new System.NotImplementedException(),
-    };
+    internal bool Fulfilled(Sim sim, HexIndex pos) {
+      var charge = sim.GetVitalicCharge(pos).Current;
+      return req switch {
+        RequireChargeType.None => true,
+        RequireChargeType.Vitae => charge.IsChargeVitae(),
+        RequireChargeType.Mors => charge.IsChargeMors(),
+        RequireChargeType.Neutral => charge.IsChargeNeutral(),
+        RequireChargeType.NeutralOrVitae => charge.IsChargeNeutral() || charge.IsChargeVitae(),
+        RequireChargeType.NeutralOrMors => charge.IsChargeNeutral() || charge.IsChargeMors(),
+        _ => throw new System.NotImplementedException(),
+      };
+    }
   }
   extension(Quintessential.RecipePredicate pred) {
     [System.Obsolete("Does not clear our custom stuff, don't use.")]

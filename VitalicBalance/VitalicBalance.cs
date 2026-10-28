@@ -12,6 +12,7 @@ internal class VitalicBalance : QuintessentialMod, IDataMod {
     GlyphGauge.LoadContent();
     GlyphAnimismusInfuser.LoadContent();
     GlyphAmbientRetrieval.LoadContent();
+    GlyphQuicksilverReduction.LoadContent();
     QApi.AddCycleEvent(new(
       CycleEvent.CycleEventExecutionType.Last,
       SimVitalicCharge.OnLast

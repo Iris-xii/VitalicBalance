@@ -73,4 +73,7 @@ internal static class Resources {
   public static Texture[] bowlGlow = Anim("bowl_glow.array",9);
   public static Texture displayVitae = Tex("display_vitae");
   public static Texture displayMors = Tex("display_mors");
+  public static GlyphTex glyphQuicksilverReduction = Glyph("quicksilver_reduction");
+  public static Texture qsGlyph = Tex("quicksilver_engraved");
+  public static Texture[] qsGlyphGlow = Anim("quicksilver_glyph.array",9);
 }
