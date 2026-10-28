@@ -40,8 +40,8 @@ internal static class GlyphQuicksilverReduction {
       renderer.RenderBase(Resources.glyphQuicksilverReduction.@base, center);
       renderer.RenderRotating(Assets.textures.parts.calcinator_bowl, BOWL, Vector2.Zero);
       renderer.RenderUpright(Resources.qsGlyph, BOWL, Vector2.Zero);
-      renderer.RenderTrackLights(Resources.chargeDisplayTextures,
-        INDICATOR, Vector2.Zero, Resources.chargeDisplayTextures.topLight.GetHalfSize(), 0f);
+      renderer.RenderTrackLights(Resources.cdNeutralVitae,
+        INDICATOR, Vector2.Zero, Resources.cdNeutralVitae.topLight.GetHalfSize(), 0f);
       RenderVent(renderer, VENT);
       if (editor.GetSimulation() is Sim sim) {
         var vc = sim.GetVitalicCharge(part);

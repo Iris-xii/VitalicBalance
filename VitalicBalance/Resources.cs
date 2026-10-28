@@ -45,6 +45,12 @@ internal static class Resources {
     }
     return anim;
   }
+  internal static LightDirTextures ChargeDisplay(string variant) => new(
+    left: Tex(Path.Combine(["charge_display", variant, "left"])),
+    right: Tex(Path.Combine(["charge_display", variant, "right"])),
+    top: Tex(Path.Combine(["charge_display", variant, "top"])),
+    bottom: Tex(Path.Combine(["charge_display", variant, "bottom"]))
+  );
   extension(PartType pt) {
     internal PartType WithTex(GlyphTex value) {
       pt.glowTexture = value.glow;
@@ -62,18 +68,19 @@ internal static class Resources {
   public static Texture[] gridMors = Anim("animismus_infuser/mors.array", 60, zeroIndexed: true);
   public static Texture eitherAnimismus = Tex("animismus_infuser/either_animismus");
   public static GlyphTex glyphAmbientRetrieval = Glyph("ambient_retrieval");
-  public static LightDirTextures chargeDisplayTextures = new(
-      left: Tex("charge_display_left"),
-      right: Tex("charge_display_right"),
-      bottom: Tex("charge_display_bottom"),
-      top: Tex("charge_display_top")
-    );
   public static Texture saltGlyph = Tex("salt_glyph_engraved");
-  public static Texture[] saltGlyphGlow = Anim("salt_glyph.array",9);
-  public static Texture[] bowlGlow = Anim("bowl_glow.array",9);
+  public static Texture[] saltGlyphGlow = Anim("salt_glyph.array", 9);
+  public static Texture[] bowlGlow = Anim("bowl_glow.array", 9);
   public static Texture displayVitae = Tex("display_vitae");
   public static Texture displayMors = Tex("display_mors");
   public static GlyphTex glyphQuicksilverReduction = Glyph("quicksilver_reduction");
   public static Texture qsGlyph = Tex("quicksilver_engraved");
-  public static Texture[] qsGlyphGlow = Anim("quicksilver_glyph.array",9);
+  public static Texture[] qsGlyphGlow = Anim("quicksilver_glyph.array", 9);
+
+  public static LightDirTextures cdVitae = ChargeDisplay("vitae");
+  public static LightDirTextures cdMors = ChargeDisplay("mors");
+  public static LightDirTextures cdNeutral = ChargeDisplay("neutral");
+  public static LightDirTextures cdNeutralMors = ChargeDisplay("neutral_mors");
+  public static LightDirTextures cdNeutralVitae = ChargeDisplay("neutral_vitae");
+  public static LightDirTextures cdEither = ChargeDisplay("either");
 }

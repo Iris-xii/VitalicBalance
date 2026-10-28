@@ -42,8 +42,8 @@ internal static class GlyphAmbientRetrieval {
       renderer.RenderBase(Resources.glyphAmbientRetrieval.@base, center);
       renderer.RenderRotating(Assets.textures.parts.calcinator_bowl, SALT_BOWL, Vector2.Zero);
       renderer.RenderUpright(Resources.saltGlyph, SALT_BOWL, Vector2.Zero);
-      renderer.RenderTrackLights(Resources.chargeDisplayTextures,
-        CHARGE_DISPLAY, Vector2.Zero, Resources.chargeDisplayTextures.topLight.GetHalfSize(), 0f);
+      renderer.RenderTrackLights(Resources.cdEither,
+        CHARGE_DISPLAY, Vector2.Zero, Resources.cdEither.topLight.GetHalfSize(), 0f);
       RenderVent(renderer,VENT);
       if (editor.GetSimulation() is Sim sim) {
         var vc = sim.GetVitalicCharge(part);
